@@ -30,9 +30,21 @@
         .active {
             opacity: 1;
         }
+        #fullscreen-btn {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        background-color: #ffffff;
+        color: #000000;
+        border: none;
+        cursor: pointer;
+        z-index: 1000;
+    }
     </style>
 </head>
 <body>
+    <button id="fullscreen-btn">Pantalla completa</button>
     <div id="slideshow">
         <img class="slide active" src="imagenesPrueba/imagen1.jpg" alt="Imagen 1">
         <img class="slide" src="imagenesPrueba/imagen2.jpg" alt="Imagen 2">
@@ -42,21 +54,35 @@
         <img class="slide" src="imagenesPrueba/imagen6.jpg" alt="Imagen 6">
         <img class="slide" src="imagenesPrueba/imagen7.jpg" alt="Imagen 7">
     </div>
-
     <script>
         const slides = document.querySelectorAll('.slide');
         let currentSlide = 0;
-
+        
         function showSlide(index) {
             slides[currentSlide].classList.remove('active');
             currentSlide = (index + slides.length) % slides.length;
             slides[currentSlide].classList.add('active');
         }
-
+        
+        // Cambia de imagen cada 3 segundos
         setInterval(() => {
             showSlide(currentSlide + 1);
-        }, 3000); // Cambia de imagen cada 3 segundos
+        }, 3000);
+        
+        // Evento para activar pantalla completa al hacer clic en el botón
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        fullscreenBtn.addEventListener('click', () => {
+            const slideshow = document.getElementById('slideshow');
+            if (slideshow.requestFullscreen) {
+                slideshow.requestFullscreen();
+            } else if (slideshow.webkitRequestFullscreen) { /* Safari */
+                slideshow.webkitRequestFullscreen();
+            } else if (slideshow.msRequestFullscreen) { /* IE11 */
+                slideshow.msRequestFullscreen();
+            }
+        });
     </script>
+    
 <!-- Code injected by live-server -->
 <script>
 	// <![CDATA[  <-- For SVG support
@@ -95,5 +121,7 @@
 	}
 	// ]]>
 </script>
+
+
 </body>
 </html>
