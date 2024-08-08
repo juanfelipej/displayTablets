@@ -31,97 +31,86 @@
             opacity: 1;
         }
         #fullscreen-btn {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 10px 20px;
-        background-color: #ffffff;
-        color: #000000;
-        border: none;
-        cursor: pointer;
-        z-index: 1000;
-    }
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            color: #000000;
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
     <button id="fullscreen-btn">Pantalla completa</button>
     <div id="slideshow">
-        <img class="slide active" src="imagenesPrueba/imagen1.jpg" alt="Imagen 1">
-        <img class="slide" src="imagenesPrueba/imagen2.jpg" alt="Imagen 2">
-        <img class="slide" src="imagenesPrueba/imagen3.jpg" alt="Imagen 3">
-        <img class="slide" src="imagenesPrueba/imagen4.jpg" alt="Imagen 4">
-        <img class="slide" src="imagenesPrueba/imagen5.jpg" alt="Imagen 5">
-        <img class="slide" src="imagenesPrueba/imagen6.jpg" alt="Imagen 6">
-        <img class="slide" src="imagenesPrueba/imagen7.jpg" alt="Imagen 7">
+        <img class="slide" src="MP108/MP108-BJ01.jpg" alt="Imagen 1">
+        <img class="slide" src="MP108/MP108-BJ01-SIDE BETS.jpg" alt="Imagen 2">
+        <img class="slide" src="MP108/pagos.gif" alt="GIF">
     </div>
     <script>
         const slides = document.querySelectorAll('.slide');
         let currentSlide = 0;
-        
+
+        // Duration of the GIF in seconds
+        const gifDuration = 54; // Adjust this to match your actual GIF duration
+        const imageDuration = 8000; // Duration for images
+
         function showSlide(index) {
             slides[currentSlide].classList.remove('active');
             currentSlide = (index + slides.length) % slides.length;
             slides[currentSlide].classList.add('active');
+
+            // Restart GIF by updating its src attribute
+            if (slides[currentSlide].src.includes('pagos.gif')) {
+                const gif = slides[currentSlide];
+                const src = gif.src;
+                gif.src = ''; // Temporarily remove the source
+                gif.src = src; // Reassign the source to restart the GIF
+            }
         }
-        
-        // Cambia de imagen cada 3 segundos
-        setInterval(() => {
-            showSlide(currentSlide + 1);
-        }, 8000);
-        
-        // Evento para activar pantalla completa al hacer clic en el botón
-        const fullscreenBtn = document.getElementById('fullscreen-btn');
-        fullscreenBtn.addEventListener('click', () => {
-            const slideshow = document.getElementById('slideshow');
-            if (slideshow.requestFullscreen) {
-                slideshow.requestFullscreen();
-            } else if (slideshow.webkitRequestFullscreen) { /* Safari */
-                slideshow.webkitRequestFullscreen();
-            } else if (slideshow.msRequestFullscreen) { /* IE11 */
-                slideshow.msRequestFullscreen();
+
+        function startSlideshow() {
+            let timeout;
+
+            function nextSlide() {
+                if (slides[currentSlide].src.includes('.gif')) {
+                    // Show GIF and wait for its duration before changing slide
+                    timeout = setTimeout(() => {
+                        showSlide(currentSlide + 1);
+                        nextSlide();
+                    }, gifDuration * 1000);
+                } else {
+                    // Show image and change slide after fixed duration
+                    timeout = setTimeout(() => {
+                        showSlide(currentSlide + 1);
+                        nextSlide();
+                    }, imageDuration);
+                }
+            }
+
+            // Start the slideshow
+            showSlide(currentSlide);
+            nextSlide();
+        }
+
+        // Start the slideshow
+        startSlideshow();
+
+        // Fullscreen button functionality
+        document.getElementById('fullscreen-btn').addEventListener('click', () => {
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari and Opera
+                document.documentElement.webkitRequestFullscreen();
+            } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+                document.documentElement.msRequestFullscreen();
             }
         });
     </script>
-    
-<!-- Code injected by live-server -->
-<script>
-	// <![CDATA[  <-- For SVG support
-	if ('WebSocket' in window) {
-		(function () {
-			function refreshCSS() {
-				var sheets = [].slice.call(document.getElementsByTagName("link"));
-				var head = document.getElementsByTagName("head")[0];
-				for (var i = 0; i < sheets.length; ++i) {
-					var elem = sheets[i];
-					var parent = elem.parentElement || head;
-					parent.removeChild(elem);
-					var rel = elem.rel;
-					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
-						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
-						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
-					}
-					parent.appendChild(elem);
-				}
-			}
-			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
-			var address = protocol + window.location.host + window.location.pathname + '/ws';
-			var socket = new WebSocket(address);
-			socket.onmessage = function (msg) {
-				if (msg.data == 'reload') window.location.reload();
-				else if (msg.data == 'refreshcss') refreshCSS();
-			};
-			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
-				console.log('Live reload enabled.');
-				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
-			}
-		})();
-	}
-	else {
-		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
-	}
-	// ]]>
-</script>
-
-
 </body>
 </html>
