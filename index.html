@@ -101,7 +101,8 @@
 
         // Fullscreen button functionality
         document.getElementById('fullscreen-btn').addEventListener('click', () => {
-            this.disabled = true;
+            var element = document.getElementById('fullscreen-btn');
+            element.style.display = 'none';
             if (document.documentElement.requestFullscreen) {
                 document.documentElement.requestFullscreen();
             } else if (document.documentElement.mozRequestFullScreen) { // Firefox
