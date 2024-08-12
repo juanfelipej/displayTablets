@@ -46,16 +46,26 @@
 <body>
     <button id="fullscreen-btn">Pantalla completa</button>
     <div id="slideshow">
+        <img class="slide" src="MP108/sie7es.gif" alt="GIF">
+        <img class="slide" src="MP108/MP108-BJ01.jpg" alt="Imagen 1">
+        <img class="slide" src="MP108/MP108-BJ01-SIDE BETS.jpg" alt="Imagen 2">
+        <img class="slide" src="MP108/Twins.gif" alt="GIF">
         <img class="slide" src="MP108/MP108-BJ01.jpg" alt="Imagen 1">
         <img class="slide" src="MP108/MP108-BJ01-SIDE BETS.jpg" alt="Imagen 2">
         <img class="slide" src="MP108/pagos.gif" alt="GIF">
+        <img class="slide" src="MP108/MP108-BJ01.jpg" alt="Imagen 1">
+        <img class="slide" src="MP108/MP108-BJ01-SIDE BETS.jpg" alt="Imagen 2">
+        
+        
     </div>
     <script>
         const slides = document.querySelectorAll('.slide');
         let currentSlide = 0;
 
         // Duration of the GIF in seconds
-        const gifDuration = 54; // Adjust this to match your actual GIF duration
+        const gifTwinsDuration = 20; // Adjust this to match your actual GIF duration
+        const gif213Duration = 53; // Adjust this to match your actual GIF duration
+        const gif7Duration = 40; // Adjust this to match your actual GIF duration
         const imageDuration = 8000; // Duration for images
 
         function showSlide(index) {
@@ -70,19 +80,45 @@
                 gif.src = ''; // Temporarily remove the source
                 gif.src = src; // Reassign the source to restart the GIF
             }
+            // Restart GIF by updating its src attribute
+            if (slides[currentSlide].src.includes('Twins.gif')) {
+                const gif = slides[currentSlide];
+                const src = gif.src;
+                gif.src = ''; // Temporarily remove the source
+                gif.src = src; // Reassign the source to restart the GIF
+            }
+            // Restart GIF by updating its src attribute
+            if (slides[currentSlide].src.includes('sie7es.gif')) {
+                const gif = slides[currentSlide];
+                const src = gif.src;
+                gif.src = ''; // Temporarily remove the source
+                gif.src = src; // Reassign the source to restart the GIF
+            }
         }
 
         function startSlideshow() {
             let timeout;
 
             function nextSlide() {
-                if (slides[currentSlide].src.includes('.gif')) {
+                if (slides[currentSlide].src.includes('pagos.gif')) {
                     // Show GIF and wait for its duration before changing slide
                     timeout = setTimeout(() => {
                         showSlide(currentSlide + 1);
                         nextSlide();
-                    }, gifDuration * 1000);
-                } else {
+                    }, gif213Duration * 1000);
+                } else  if (slides[currentSlide].src.includes('Twins.gif')) {
+                    // Show GIF and wait for its duration before changing slide
+                    timeout = setTimeout(() => {
+                        showSlide(currentSlide + 1);
+                        nextSlide();
+                    }, gifTwinsDuration * 1000);
+                } else  if (slides[currentSlide].src.includes('sie7es.gif')) {
+                    // Show GIF and wait for its duration before changing slide
+                    timeout = setTimeout(() => {
+                        showSlide(currentSlide + 1);
+                        nextSlide();
+                    }, gif7Duration * 1000);
+                }else {
                     // Show image and change slide after fixed duration
                     timeout = setTimeout(() => {
                         showSlide(currentSlide + 1);
